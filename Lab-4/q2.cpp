@@ -74,5 +74,5 @@ int main(){
     return 0;
 }
 
-//Time complexity O(n)
+//Time complexity O(n+m)
 //Space complexity O(1)
