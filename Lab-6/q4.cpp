@@ -17,6 +17,7 @@ bool isCycle(int i,vector<int>adj[],int vis[],int pathVis[]){
 }
 
 int main(){
+    freopen("inputq4.txt", "r", stdin);
     int n;
     cin>>n;
     int e;

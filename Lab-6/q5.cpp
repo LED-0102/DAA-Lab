@@ -115,6 +115,7 @@ vector<int> findArticulationPoints(int v, vector<vector<int>> &edges){
 }
 
 int main(){
+    freopen("inputq5.txt", "r", stdin);
     int n;
     cin>>n;
     int e;

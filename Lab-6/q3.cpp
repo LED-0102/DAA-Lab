@@ -19,6 +19,7 @@ void dfs2(int i,vector<int>&vis,vector<int>adjT[],vector<int>&temp){
     }
 }
 int main(){
+    freopen("inputq3.txt", "r", stdin);
     int n;
     cin>>n;
     int e;

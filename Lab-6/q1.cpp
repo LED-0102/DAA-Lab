@@ -97,15 +97,17 @@ void dfs(int vertex, int vis[], stack<int> &st, vector<int> g[], int path_vis[],
 int main() {
     freopen("inputq1.txt", "r", stdin);
     int n, m;
+    int vis[n+1] ={0};
+    int path_vis[n+1]={0};
     cin>>n>>m;
     vector<int> adj[n+1];
+    
     bool possible=true;
     rep(i, 0, m){
         int x, y; cin>>x>>y;
         adj[x].push_back(y);
     }
-    int vis[n+1] ={0};
-    int path_vis[n+1]={0};
+    
     stack<int> st;
     for (int i=1; i<=n; i++){
         if (!vis[i]){

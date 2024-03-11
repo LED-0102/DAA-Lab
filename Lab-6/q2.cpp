@@ -23,6 +23,7 @@ vector<int> topologicalSort(vector<int>adj[],vector<int>&indeg,int n){
 }
 
 int main(){
+    freopen("inputq2.txt", "r", stdin);
     int n;
     cin>>n;
     int e;
