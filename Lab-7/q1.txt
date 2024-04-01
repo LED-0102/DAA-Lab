@@ -1,0 +1,1 @@
+No, the greedy algorithm will not provide correct solution always.
