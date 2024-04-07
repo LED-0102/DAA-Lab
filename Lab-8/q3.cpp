@@ -48,41 +48,63 @@ class DisjointSetUnion {
         }
 };
 
+struct Edge {
+    int id;
+    int wt;
+    int u;
+    int v;
+};
+
+Edge createEdge(int id, int wt, int u, int v) {
+    Edge edge;
+    edge.id = id;
+    edge.wt = wt;
+    edge.u = u;
+    edge.v = v;
+    return edge;
+}
+
+bool cmpEdgeWeight (const Edge &edge1, const Edge &edge2) {
+    return edge1.wt < edge2.wt;
+}
 int main(){
     int n, m; cin>>n>>m;
-    vector<pair<int, pair<int, int>>> edges;
-    map<pair<int, int>, int> present;
+    map<int, int> present;
     DisjointSetUnion dsu;
+    vector<Edge> edges;
+    int id=1;
     for (int i=0; i<m; i++){
         int a, b, c; 
         cin>>a>>b>>c;
-        edges.push_back({c, {a, b}});
+        edges.push_back(createEdge(id, c, a, b));
+        id++;
     }
-    sort(edges.begin(), edges.end());
+    sort(edges.begin(), edges.end(), cmpEdgeWeight);
     for (int i=1; i<=n; i++) {
         dsu.make(i);
     }
     int total_cost=0;
     for (auto &edge: edges) {
-        int wt = edge.first;
-        int u = edge.second.first;
-        int v = edge.second.second;
+        int wt = edge.wt;
+        int u = edge.u;
+        int v = edge.v;
 
         if (dsu.find(u) == dsu.find(v)) continue;
         dsu.Union(u, v);
         total_cost += wt;
-        present[{u, v}]=1;
+        present[edge.id]=1;
     }
-    cout<<total_cost<<endl;
-    for (auto i: present) {
-        if (i.second == 1) {
-            cout<<i.first.first<<" "<<i.first.second<<endl;
-        }
-    }
-    int sec_best_cost=0;
-    vector<pair<int, int>> sec_best_MST;
+    cout<<"Best cost: "<<total_cost<<endl;
+    // for (auto i: edges) {
+    //     if (present.find(i.id) != present.end() && present[i.wt] == 1) {
+    //         cout<<i.u<<" "<<i.v<<endl;
+    //     }
+    // }
+    int sec_best_cost=INT_MAX;
+    vector<int> sec_best_MST;
     for (auto edge: edges) {
-        if (present.find(edge.second) == present.end()) {
+        //Need edge present in MST
+        if (present.find(edge.id) == present.end()) {
             continue;
         }
         DisjointSetUnion d;
@@ -90,33 +112,38 @@ int main(){
             d.make(i);
         }
         int cost=0;
-        vector<pair<int, int>> mst;
+        vector<int> mst;
         for (auto e: edges) {
-            if (e.second == edge.second) continue;
-            if (present.find(e.second) != present.end()) {
-                continue;
-            }
-            int wt = edge.first;
-            int u = edge.second.first;
-            int v = edge.second.second;
-
+            if (e.id == edge.id) continue;
+            //If edge present in MST, continue
+            int wt = e.wt;
+            int u = e.u;
+            int v = e.v;
             if (d.find(u) == d.find(v)) continue;
-            cout<<"u "<<u<<" "<<v<<endl;
             d.Union(u, v);
-            mst.push_back({u, v});
+            mst.push_back(e.id);
             cost += wt;
         }
-        if (cost >= sec_best_cost) {
+        bool isMST=true;
+        int comp_one = d.find(1);
+        for (int i=2; i<=n; i++) {
+            if (comp_one != d.find(i)) {
+                isMST=false;
+                break;
+            }
+        }
+        if (cost < sec_best_cost && isMST) {
             sec_best_cost = cost;
             sec_best_MST = mst;
         }
         mst.clear();
         cost=0;
     }
-    cout<<"Second best cost: "<<sec_best_cost;
+    cout<<"Second best cost: "<<sec_best_cost<<endl;
+    cout<<"Edge id's in second best MSTs are: ";
     for (auto i: sec_best_MST) {
-        cout<<i.first<<" "<<i.second<<endl;
-    }
+        cout<<i<<" ";
+    } cout<<endl;
     int comp_one = dsu.find(1);
     for (int i=2; i<=n; i++) {
         if (comp_one != dsu.find(i)) {
