@@ -16,8 +16,6 @@ void dfs (int source, vector<pair<int, int>> edges[], int n, int visMask, ll pat
             continue;
         }
 
-        // visMask |= (1 << adj);
-
         dfs(adj, edges, n, visMask | (1 << adj), pathSum + wt, col, ans);
 
     }
