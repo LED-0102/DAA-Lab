@@ -12,10 +12,6 @@ void dfs (int source, vector<pair<int, int>> edges[], int n, int visMask, ll pat
         int wt = graph[source][edge.first][edge.second];
         int col = edge.second;
         int adj = edge.first;
-
-        if(!wt)
-            continue;
-
         if (col == prevCol || (visMask & (1 << adj))) {
             continue;
         }
